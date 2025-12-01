@@ -1,12 +1,34 @@
 from pathlib import Path
 
+def move_dial(old_position, line):
+    direction = line[0]
+    steps = int(line[1:])
+    bonus_zero_steps = 0
+    wrap_arounds = 0
+
+    if steps > 99:
+        wrap_arounds = str(steps)[0]
+
+    if direction == "R":
+        new_position = (old_position + steps) % 100
+    else: 
+        new_position = (old_position - steps) % 100
+
+    return new_position
+
 def solve(input_text):
-    """Solve part 2 of the puzzle."""
+    """Solve part 1 of the puzzle."""
+
     lines = input_text.strip().split('\n')
-    
-    # TODO: Implement solution
-    
-    return None
+    position = 50
+    zero_count = 0
+
+    for line in lines:
+        position = move_dial(position, line)
+        if position == 0:
+            zero_count += 1
+        
+    return zero_count
 
 if __name__ == "__main__":
     input_file = Path(__file__).parent.parent.parent / "inputs" / "day01.txt"
