@@ -3,21 +3,29 @@ from pathlib import Path
 def move_dial(old_position, line):
     direction = line[0]
     steps = int(line[1:])
-    bonus_zero_steps = 0
+    zero_count = 0
 
     if direction == "R":
+        if old_position == 0:
+            zero_count = steps // 100
+        else:
+            zero_count = (old_position + steps) // 100
+        
         new_position = (old_position + steps) % 100
-        bonus_zero_steps = (old_position + steps) // 100
-        # print(f"Calculating bonus zeros going R: {old_position} + {steps} // 100 = {bonus_zero_steps} - landed on {new_position}")
-    else:
+
+    else: # direction == "L"
+        if old_position == 0:
+            zero_count = steps // 100
+        else:
+            if steps >= old_position:
+                # We hit 0 at least once
+                zero_count = ((steps - old_position) // 100) + 1
+            else:
+                zero_count = 0
+        
         new_position = (old_position - steps) % 100
-        bonus_zero_steps = ((old_position - steps) // 100) * -1
-        # print(f"Calculating bonus zeros going L: {old_position} - {steps} // 100 = {bonus_zero_steps} - landed on {new_position}")
 
-    if new_position == 0:
-        bonus_zero_steps -= 1
-
-    return new_position, bonus_zero_steps
+    return new_position, zero_count
 
 def solve(input_text):
     """Solve part 2 of the puzzle."""
@@ -27,10 +35,8 @@ def solve(input_text):
     zero_count = 0
 
     for line in lines:
-        position, bonus_zero_steps = move_dial(position, line)
-        zero_count += bonus_zero_steps
-        if position == 0:
-            zero_count += 1
+        position, line_zero_count = move_dial(position, line)
+        zero_count += line_zero_count
         
     return zero_count
 
@@ -40,3 +46,7 @@ if __name__ == "__main__":
     
     result = solve(input_text)
     print(f"Answer: {result}")
+
+
+
+# Starting at 21, going L: 21 - 921 // 100 = 9 bonus zeros - landed on 0
