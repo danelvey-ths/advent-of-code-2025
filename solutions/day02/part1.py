@@ -12,13 +12,21 @@ def solve(input_text):
         for i in range(difference + 1):
             generated_range.append(start + i)
         
-        print(id_range, generated_range)
         return generated_range
 
 
-    def check_id_range(id_range):
-        if str(id_range[0]) == "0":
+    def check_id(id):
+        print(id)
+        if str(id[0]) == "0":
             pass
+
+
+    def check_id_range(id_range):
+        invalid_ids = []
+        
+        for id in id_range:
+            boolean_id = check_id(str(id))
+        
            
     
     for id_range in id_ranges:
