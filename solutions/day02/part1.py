@@ -16,24 +16,31 @@ def solve(input_text):
 
 
     def check_id(id):
-        print(id)
-        if str(id[0]) == "0":
-            pass
+        # Check for repeating pattern exactly twice
+        res = len(id) % 2 == 0 and id[:len(id)//2] == id[len(id)//2:]
+        if res:
+            return id
+        return 0
 
 
     def check_id_range(id_range):
-        invalid_ids = []
+        invalid_id_sum = 0
         
         for id in id_range:
-            boolean_id = check_id(str(id))
+            if str(id)[0] == "0":
+                print(f"Caught a leading zero id! {id}")
+                continue
+            invalid_id = check_id(str(id))
+            invalid_id_sum += int(invalid_id)
+        return invalid_id_sum
         
            
-    
+    invalid_id_sum = 0
     for id_range in id_ranges:
         generated_ids_in_range = generate_ids_from_range(id_range)
-        check_id_range(generated_ids_in_range)
+        invalid_id_sum += check_id_range(generated_ids_in_range)
     
-    return None
+    return invalid_id_sum
 
 if __name__ == "__main__":
     input_file = Path(__file__).parent.parent.parent / "inputs" / "day02-sample.txt"
