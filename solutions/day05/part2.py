@@ -7,18 +7,38 @@ def solve(input_text):
     lines = input_text.strip().split("\n")
     split_index = lines.index("")
     ranges = lines[:split_index]
-    fresh_ids = set()
+    ranges.sort(key=lambda x: int(x.split("-")[0]))  # Sort ranges by their start value
+    number_of_fresh_ids = 0
     start_time = datetime.datetime.now()
 
-    for id_range in ranges:
-        start, end = map(int, id_range.split("-"))
-        for single_id in range(start, end + 1):
-            fresh_ids.add(single_id)
+    def merge_intervals(intervals):
+        merged_intervals = []
+
+        merged_intervals = [intervals[0]]
+
+        for current in intervals:
+            last_merged = merged_intervals[-1]
+
+            # If the current interval overlaps with the last merged interval, merge them
+            if current[0] <= last_merged[1]:
+                last_merged[1] = max(last_merged[1], current[1])
+            else:
+                # Otherwise, add the current interval to the merged list
+                merged_intervals.append(current)
+
+        return merged_intervals
+
+    merged_ranges = merge_intervals([list(map(int, r.split("-"))) for r in ranges])
+
+    for id_range in merged_ranges:
+        start, end = id_range
+        difference = end - start + 1
+        number_of_fresh_ids += difference
 
     end_time = datetime.datetime.now()
     print(f"Time taken: {end_time - start_time}")
     # print("fresh_IDs:", fresh_ids)
-    return len(fresh_ids)
+    return number_of_fresh_ids
 
 
 if __name__ == "__main__":
