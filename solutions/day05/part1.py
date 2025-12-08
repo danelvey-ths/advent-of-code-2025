@@ -7,24 +7,15 @@ def solve(input_text):
     split_index = lines.index("")
     ranges = lines[:split_index]
     ids_to_check = lines[split_index + 1 :]
-    set_of_ids = set()
-    fresh_ids = []
-
-    def generate_ids_from_range(id_range):
-        start, end = map(int, id_range.split("-"))
-        difference = end - start
-        for i in range(difference + 1):
-            set_of_ids.add(start + i)
+    fresh_ids = set()
 
     for id_range in ranges:
-        generate_ids_from_range(id_range)
+        start, end = map(int, id_range.split("-"))
+        for veg_id in ids_to_check:
+            veg_id_int = int(veg_id)
+            if veg_id_int >= start and veg_id_int <= end:
+                fresh_ids.add(veg_id_int)
 
-    for veg_id in ids_to_check:
-        if int(veg_id) in set_of_ids:
-            fresh_ids.append(veg_id)
-
-    # print("Generated IDs:", set_of_ids)
-    # print("IDs:", ids_to_check)
     return len(fresh_ids)
 
 
