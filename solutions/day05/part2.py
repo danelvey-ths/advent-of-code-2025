@@ -1,4 +1,5 @@
 from pathlib import Path
+import datetime
 
 
 def solve(input_text):
@@ -7,26 +8,21 @@ def solve(input_text):
     split_index = lines.index("")
     ranges = lines[:split_index]
     fresh_ids = set()
+    start_time = datetime.datetime.now()
 
-    """
-        The ranges are all we care about. I want to know the numbers in between those ranges. 
-        Don't try to generate all the numbers in between because this will crash the machine.
-        Just add what the difference is in the ranges and then we can add all of those numbers together to get the total count of fresh IDs.
-
-        I need to factor in duplicates in the ranges
-    """
-
-    for id_range in ranges:  # This is a solution that generates all the ids - this will use a tonne of memory
+    for id_range in ranges:
         start, end = map(int, id_range.split("-"))
-        difference = end - start
-        for i in range(difference + 1):
-            fresh_ids.add(start + i)
+        for single_id in range(start, end + 1):
+            fresh_ids.add(single_id)
 
+    end_time = datetime.datetime.now()
+    print(f"Time taken: {end_time - start_time}")
+    # print("fresh_IDs:", fresh_ids)
     return len(fresh_ids)
 
 
 if __name__ == "__main__":
-    input_file = Path(__file__).parent.parent.parent / "inputs" / "day05-sample.txt"
+    input_file = Path(__file__).parent.parent.parent / "inputs" / "day05.txt"
     input_text = input_file.read_text()
 
     result = solve(input_text)
