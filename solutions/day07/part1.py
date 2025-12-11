@@ -3,23 +3,10 @@ from pathlib import Path
 
 def solve(input_text):
     """Solve part 1 of the puzzle."""
-    lines = input_text.strip().split("\n")
     matrix = [list(row) for row in input_text.split("\n")]
     beam_split_count = 0
     for row in matrix:
         print(row)
-
-    def chevron_split(matrix, row, col):
-        directions = [
-            (-1, 0),  # Up
-            (-1, 1),  # Up-right
-            (0, 1),  # Right
-            (1, 1),  # Right-down
-            (1, 0),  # Down
-            (1, -1),  # Down-left
-            (0, -1),  # Left
-            (-1, -1),  # Up-left
-        ]
 
     def check_S_or_pipe(matrix, row, col):
         if (row + 1) < len(matrix) - 1:
