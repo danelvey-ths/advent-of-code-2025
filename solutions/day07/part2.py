@@ -24,15 +24,14 @@ def solve(input_text):
             return 0
         return 0
 
-        # if down direction == "^":
-        #   chevron split function & add to count
-
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
             if matrix[i][j] == "S" or matrix[i][j] == "|":
                 beam_split_count += check_S_or_pipe(matrix, i, j)
-            # elif matrix[i][j] == "^":
-            #     chevron_split(matrix, i, j)
+            elif (
+                matrix[i - 1][j] == "|" and i == len(matrix) - 1
+            ):  # polishes off the last row
+                matrix[i][j] = "|"
             else:
                 continue
     for row in matrix:
@@ -42,7 +41,7 @@ def solve(input_text):
 
 
 if __name__ == "__main__":
-    input_file = Path(__file__).parent.parent.parent / "inputs" / "day07.txt"
+    input_file = Path(__file__).parent.parent.parent / "inputs" / "day07-sample.txt"
     input_text = input_file.read_text()
 
     result = solve(input_text)
